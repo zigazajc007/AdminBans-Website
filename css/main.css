@@ -1,0 +1,36 @@
+*{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+span{
+    box-shadow: 1px 5px;
+    margin-top: -10px;
+}
+
+h1{
+    text-align: center;
+    margin: 1em;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+.table{
+    max-width: 80%;
+    margin: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td{
+    text-align: center;
+    padding: 15px;
+}
+
+.fa {
+    font-size: 12px;
+}

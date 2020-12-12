@@ -1,0 +1,44 @@
+/*
+
+----------------------------------------------------------
+              Dark theme made by Black1_TV
+----------------------------------------------------------
+
+*/
+
+body{
+    background-color: #464c53;
+}
+
+h1{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
+a{
+    color: white;
+}
+
+a:hover{
+    color: white;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th{
+    background-color: #68727d;
+    color: white;
+}
+
+td{
+    color: #d5d8dc;
+}
+
+tr:nth-child(even){background-color: #515861;}
+
+tr:hover {background-color: #68727d;}

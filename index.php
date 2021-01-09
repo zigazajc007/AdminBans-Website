@@ -165,7 +165,7 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
                                 <td><?php if($heads_link != null){ ?><img src="<?php echo str_replace("{uuid}", $from_uuid['id'], $heads_link); ?>" /><?php } echo " " . $row['username_from']; ?></td>
                                 <td><?php if($row['reason'] != null) echo chatColor($row['reason']); ?></td>
                                 <td><?php echo $row['created']; ?></td>
-                                <td><?php if($row['until'] == null){ echo 'Never'; }else{ echo $row['until']; } ?></td>
+                                <td><?php if($row['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $row['until']; } ?></td>
                                 <td><?php if($row['server'] != ""){ echo $row['server']; }else{ echo "-"; } ?></td>
                             </tr>
                             <?php

@@ -29,9 +29,6 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 			$activeMobile = 'mainMenuMobileLinkSelected block pl-3 pr-4 py-2 border-l-4 text-base font-medium';
 			$inactiveMobile = 'mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium';
-
-			$ascIcon = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 15l6 -6l6 6"></path></svg>';
-			$descIcon = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 9l6 6l6 -6"></path></svg>';
 		?>
 
 		<nav class="secondaryBackgroundColor shadow">
@@ -110,47 +107,46 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 				$sql = "SELECT * FROM adminbans_banned_players";
 				$limit = "LIMIT " . Settings::$data_limit;
+				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
 
 				if(isset($_GET["player"]) && $_GET["player"] != ''){
 					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
 				}
 
-				if(isset($_GET["order"])){
-					switch ($_GET["order"]) {
-						case 'player':
-							$sql = $sql . " ORDER BY username_to " . $limit;
-							break;
-						case 'player_desc':
-							$sql = $sql . " ORDER BY username_to desc " . $limit;
-							break;
-						case 'moderator':
-							$sql = $sql . " ORDER BY username_from " . $limit;
-							break;
-						case 'moderator_desc':
-							$sql = $sql . " ORDER BY username_from desc " . $limit;
-							break;
-						case 'date':
-							$sql = $sql . " ORDER BY created " . $limit;
-							break;
-						case 'date_desc':
-							$sql = $sql . " ORDER BY created desc " . $limit;
-							break;
-						case 'expires':
-							$sql = $sql . " ORDER BY until " . $limit;
-							break;
-						case 'expires_desc':
-							$sql = $sql . " ORDER BY until desc " . $limit;
-							break;
-						case 'server':
-							$sql = $sql . " ORDER BY until " . $limit;
-							break;
-						case 'server_desc':
-							$sql = $sql . " ORDER BY until desc " . $limit;
-							break;
-						default:
-							$sql = $sql . " " . $limit;
-							break;
-					}
+				switch ($order) {
+					case 'player':
+						$sql = $sql . " ORDER BY username_to " . $limit;
+						break;
+					case 'player_desc':
+						$sql = $sql . " ORDER BY username_to desc " . $limit;
+						break;
+					case 'moderator':
+						$sql = $sql . " ORDER BY username_from " . $limit;
+						break;
+					case 'moderator_desc':
+						$sql = $sql . " ORDER BY username_from desc " . $limit;
+						break;
+					case 'date':
+						$sql = $sql . " ORDER BY created " . $limit;
+						break;
+					case 'date_desc':
+						$sql = $sql . " ORDER BY created desc " . $limit;
+						break;
+					case 'expires':
+						$sql = $sql . " ORDER BY until " . $limit;
+						break;
+					case 'expires_desc':
+						$sql = $sql . " ORDER BY until desc " . $limit;
+						break;
+					case 'server':
+						$sql = $sql . " ORDER BY until " . $limit;
+						break;
+					case 'server_desc':
+						$sql = $sql . " ORDER BY until desc " . $limit;
+						break;
+					default:
+						$sql = $sql . " " . $limit;
+						break;
 				}
 
 				$result = Utils::executeQuery($sql);
@@ -163,35 +159,16 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				<table class="min-w-full divide-y passwordsBorderColor table-fixed">
 					<thead class="secondaryBackgroundColor">
 						<tr>
-							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-								<a href="/?page=bans&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">
-									<div class="flex justify-start space-x-3">
-										<span>Player</span>
-										<?php
-										if(isset($_GET["order"]) && $_GET["order"] == 'player'){
-											echo $ascIcon;
-										}else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){
-											echo $descIcon;
-										}
-										?>
-									</div>
-								</a>
-							</th>
-							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
-							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Reason</th>
-							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Categories</th>
-							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Players</th>
-							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Players</th>
+							<?php
+								echo Utils::generateHeader('bans', 'player', 'Player', $order);
+								echo Utils::generateHeader('bans', 'moderator', 'Moderator', $order);
+								echo Utils::generateHeader('bans', 'reason', 'Reason', $order, 0);
+								echo Utils::generateHeader('bans', 'date', 'Date', $order);
+								echo Utils::generateHeader('bans', 'expires', 'Expires', $order);
+								echo Utils::generateHeader('bans', 'server', 'Server', $order);
+							?>
 						</tr>
 					</thead>
-					<tr>
-						<th><a href="/?page=bans&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th><a href="/?page=bans&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th><a>Reason</a></th>
-						<th><a href="/?page=bans&order=date<?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th><a href="/?page=bans&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th><a href="/?page=bans&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					</tr>
 				<?php
 
 				for($i = 0; $i < count($result); $i++){

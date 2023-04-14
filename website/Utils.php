@@ -105,6 +105,29 @@ class Utils{
 			return null;
 		}
 	}
+
+	public static function generateHeader($page = 'bans', $order = 'player', $name = 'Player', $curOrder = null, $type = 1){
+
+		if($type === 0){
+			return '<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">' . $name . '</th>';
+		}
+
+		$ascIcon = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 15l6 -6l6 6"></path></svg>';
+		$descIcon = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 9l6 6l6 -6"></path></svg>';
+
+		$newOrder = (isset($curOrder) && $curOrder == $order) ? $order . '_desc' : $order;
+		$html = '<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"><a href="/?page=' . $page . '&order=' . $newOrder . '"><div class="flex justify-start space-x-3"><span>' . $name . '</span>';
+
+		if(isset($curOrder) && $curOrder == $order){
+			$html .= $ascIcon;
+		}else if(isset($curOrder) && $curOrder == $order . '_desc'){
+			$html .= $descIcon;
+		}
+
+		$html .= '</div></a></th>';
+
+		return $html;
+	}
 }
 
 ?>

@@ -35,7 +35,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		  <ul class="navbar-nav mr-auto">
-			<li class="nav-item <?php if($_GET["page"] == ''){ echo "active"; } ?>">
+			<li class="nav-item <?php if(!isset($_GET["page"]) || $_GET["page"] == ''){ echo "active"; } ?>">
 			  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 			</li>
 			<?php if(Settings::$store_link != null){ ?>
@@ -43,16 +43,16 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 			  <a class="nav-link" target="_blank" href="<?php echo Settings::$store_link; ?>">Store</a>
 			</li>
 			<?php } ?>
-			<li class="nav-item <?php if($_GET["page"] == 'bans'){ echo "active"; } ?>">
+			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ echo "active"; } ?>">
 			  <a class="nav-link" href="/?page=bans">Bans <span class="badge badge-pill badge-light"><?php echo $ban_count; ?></span></a>
 			</li>
-			<li class="nav-item <?php if($_GET["page"] == 'mutes'){ echo "active"; } ?>">
+			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'mutes'){ echo "active"; } ?>">
 			  <a class="nav-link" href="/?page=mutes">Mutes <span class="badge badge-pill badge-light"><?php echo $mute_count; ?></span></a>
 			</li>
-			<li class="nav-item <?php if($_GET["page"] == 'warns'){ echo "active"; } ?>">
+			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'warns'){ echo "active"; } ?>">
 			  <a class="nav-link" href="/?page=warns">Warns <span class="badge badge-pill badge-light"><?php echo $warn_count; ?></span></a>
 			</li>
-			<li class="nav-item <?php if($_GET["page"] == 'kicks'){ echo "active"; } ?>">
+			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ echo "active"; } ?>">
 			  <a class="nav-link" href="/?page=kicks">Kicks <span class="badge badge-pill badge-light"><?php echo $kick_count; ?></span></a>
 			</li>
 			<?php if(Settings::$discord_link != null){ ?>
@@ -75,164 +75,158 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 	  <div class="table">
 
-		  <?php if($_GET["page"] == 'bans'){ ?>
+		  <?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ ?>
 
-					<h1 class="animate__animated animate__bounceInDown">Bans</h1> <?php
+				<h1 class="animate__animated animate__bounceInDown">Bans</h1> <?php
 
-					$sql = "SELECT * FROM adminbans_banned_players";
-					$limit = "LIMIT " . Settings::$data_limit;
+				$sql = "SELECT * FROM adminbans_banned_players";
+				$limit = "LIMIT " . Settings::$data_limit;
 
-					if(isset($_GET["player"]) && $_GET["player"] != ''){
-						$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+				if(isset($_GET["player"]) && $_GET["player"] != ''){
+					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+				}
+
+				if(isset($_GET["order"])){
+					switch ($_GET["order"]) {
+						case 'player':
+							$sql = $sql . " ORDER BY username_to " . $limit;
+							break;
+						case 'player_desc':
+							$sql = $sql . " ORDER BY username_to desc " . $limit;
+							break;
+						case 'moderator':
+							$sql = $sql . " ORDER BY username_from " . $limit;
+							break;
+						case 'moderator_desc':
+							$sql = $sql . " ORDER BY username_from desc " . $limit;
+							break;
+						case 'date':
+							$sql = $sql . " ORDER BY created " . $limit;
+							break;
+						case 'date_desc':
+							$sql = $sql . " ORDER BY created desc " . $limit;
+							break;
+						case 'expires':
+							$sql = $sql . " ORDER BY until " . $limit;
+							break;
+						case 'expires_desc':
+							$sql = $sql . " ORDER BY until desc " . $limit;
+							break;
+						case 'server':
+							$sql = $sql . " ORDER BY until " . $limit;
+							break;
+						case 'server_desc':
+							$sql = $sql . " ORDER BY until desc " . $limit;
+							break;
+						default:
+							$sql = $sql . " " . $limit;
+							break;
 					}
+				}
 
-					if(isset($_GET["order"])){
-						switch ($_GET["order"]) {
-							case 'player':
-								$sql = $sql . " ORDER BY username_to " . $limit;
-								break;
-							case 'player_desc':
-								$sql = $sql . " ORDER BY username_to desc " . $limit;
-								break;
-							case 'moderator':
-								$sql = $sql . " ORDER BY username_from " . $limit;
-								break;
-							case 'moderator_desc':
-								$sql = $sql . " ORDER BY username_from desc " . $limit;
-								break;
-							case 'date':
-								$sql = $sql . " ORDER BY created " . $limit;
-								break;
-							case 'date_desc':
-								$sql = $sql . " ORDER BY created desc " . $limit;
-								break;
-							case 'expires':
-								$sql = $sql . " ORDER BY until " . $limit;
-								break;
-							case 'expires_desc':
-								$sql = $sql . " ORDER BY until desc " . $limit;
-								break;
-							case 'server':
-								$sql = $sql . " ORDER BY until " . $limit;
-								break;
-							case 'server_desc':
-								$sql = $sql . " ORDER BY until desc " . $limit;
-								break;
-							default:
-								$sql = $sql . " " . $limit;
-								break;
-						}
-					}
+				$result = Utils::executeQuery($sql);
 
-					$result = Utils::executeQuery($sql);
+				?><table>
+					<tr>
+						<th><a href="/?page=bans&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a href="/?page=bans&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a>Reason</a></th>
+						<th><a href="/?page=bans&order=date<?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a href="/?page=bans&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a href="/?page=bans&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					</tr>
+				<?php
 
-					?><table>
-						<tr>
-							<th><a href="/?page=bans&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a href="/?page=bans&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a>Reason</a></th>
-							<th><a href="/?page=bans&order=date<?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a href="/?page=bans&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a href="/?page=bans&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						</tr>
+				for($i = 0; $i < count($result); $i++){
+					?><tr>
+						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
+						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
+						<td><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
+						<td><?php echo $result[$i]['created']; ?></td>
+						<td><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
+						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
+					</tr>
 					<?php
+					}
+				?></table><?php
 
-					for($i = 0; $i < count($result); $i++){
-						?><tr>
-							<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
-							<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
-							<td><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
-							<td><?php echo $result[$i]['created']; ?></td>
-							<td><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
-							<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
-						</tr>
-						<?php
-						}
-					?></table><?php
+		  }else if(isset($_GET["page"]) && $_GET["page"] == 'mutes'){ ?>
 
-		   }else if($_GET["page"] == 'mutes'){ ?>
+				<h1 class="animate__animated animate__bounceInDown">Mutes</h1> <?php
 
-			   <h1 class="animate__animated animate__bounceInDown">Mutes</h1> <?php
+				$sql = "SELECT * FROM adminbans_muted_players";
+				$limit = "LIMIT " . Settings::$data_limit;
 
-			   $sql = "SELECT * FROM adminbans_muted_players";
-			   $limit = "LIMIT " . Settings::$data_limit;
+				if(isset($_GET["player"]) && $_GET["player"] != ''){
+					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+				}
 
-			   if($_GET["player"] != ''){
-				   $sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
-			   }
+				if(isset($_GET["order"])){
+					switch ($_GET["order"]) {
+						case 'player':
+							$sql = $sql . " ORDER BY username_to " . $limit;
+							break;
+						case 'player_desc':
+							$sql = $sql . " ORDER BY username_to desc " . $limit;
+							break;
+						case 'moderator':
+							$sql = $sql . " ORDER BY username_from " . $limit;
+							break;
+						case 'moderator_desc':
+							$sql = $sql . " ORDER BY username_from desc " . $limit;
+							break;
+						case 'date':
+							$sql = $sql . " ORDER BY created " . $limit;
+							break;
+						case 'date_desc':
+							$sql = $sql . " ORDER BY created desc " . $limit;
+							break;
+						case 'expires':
+							$sql = $sql . " ORDER BY until " . $limit;
+							break;
+						case 'expires_desc':
+							$sql = $sql . " ORDER BY until desc " . $limit;
+							break;
+						case 'server':
+							$sql = $sql . " ORDER BY until " . $limit;
+							break;
+						case 'server_desc':
+							$sql = $sql . " ORDER BY until desc " . $limit;
+							break;
+						default:
+							$sql = $sql . " " . $limit;
+							break;
+					}
+				}
 
-			   switch ($_GET["order"]) {
-				   case 'player':
-					   $sql = $sql . " ORDER BY username_to " . $limit;
-					   break;
-				   case 'player_desc':
-					   $sql = $sql . " ORDER BY username_to desc " . $limit;
-					   break;
-				   case 'moderator':
-					   $sql = $sql . " ORDER BY username_from " . $limit;
-					   break;
-				   case 'moderator_desc':
-					   $sql = $sql . " ORDER BY username_from desc " . $limit;
-					   break;
-				   case 'date':
-					   $sql = $sql . " ORDER BY created " . $limit;
-					   break;
-				   case 'date_desc':
-					   $sql = $sql . " ORDER BY created desc " . $limit;
-					   break;
-				   case 'expires':
-					   $sql = $sql . " ORDER BY until " . $limit;
-					   break;
-				   case 'expires_desc':
-					   $sql = $sql . " ORDER BY until desc " . $limit;
-					   break;
-				   case 'server':
-					   $sql = $sql . " ORDER BY until " . $limit;
-					   break;
-				   case 'server_desc':
-					   $sql = $sql . " ORDER BY until desc " . $limit;
-					   break;
-				   default:
-					   $sql = $sql . " " . $limit;
-					   break;
-			   }
+				$result = Utils::executeQuery($sql);
 
-			   $result = $conn->query($sql);
+				?><table>
+					<tr>
+						<th><a href="/?page=mutes&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a href="/?page=mutes&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th>Reason</th>
+						<th><a href="/?page=mutes&order=date<?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a href="/?page=mutes&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+						<th><a href="/?page=mutes&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					</tr>
+				<?php
 
-			   ?><table>
-				   <tr>
-					   <th><a href="/?page=mutes&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="/?page=mutes&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th>Reason</th>
-					   <th><a href="/?page=mutes&order=date<?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="/?page=mutes&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if(isset($_GET["order"]) && $_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="/?page=mutes&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-				   </tr>
-			   <?php
 
-			   if ($result->num_rows > 0) {
+				for($i = 0; $i < count($result); $i++){
+				?><tr>
+						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
+						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
+						<td><?php echo Utils::chatColor($result[$i]['reason']); ?></td>
+						<td><?php echo $result[$i]['created']; ?></td>
+						<td><?php echo $result[$i]['until']; ?></td>
+						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
+					</tr>
+					<?php
+				}
+				?></table><?php
 
-				   while($row = $result->fetch_assoc()) {
-					 ?><tr>
-					   <?php $to_uuid_json = file_get_contents('https://api.mojang.com/users/profiles/minecraft/' . $row['username_to']);
-							 $from_uuid_json = file_get_contents('https://api.mojang.com/users/profiles/minecraft/' . $row['username_from']);
-							 $to_uuid = json_decode($to_uuid_json, true);
-							 $from_uuid = json_decode($from_uuid_json, true);
-							?>
-						   <td><?php if($heads_link != null){ ?><img src="<?php echo str_replace("{uuid}", $to_uuid['id'], $heads_link); ?>" /><?php } echo " " . $row['username_to']; ?></td>
-						   <td><?php if($heads_link != null){ ?><img src="<?php echo str_replace("{uuid}", $from_uuid['id'], $heads_link); ?>" /><?php } echo " " . $row['username_from']; ?></td>
-						   <td><?php echo chatColor($row['reason']); ?></td>
-						   <td><?php echo $row['created']; ?></td>
-						   <td><?php echo $row['until']; ?></td>
-						   <td><?php if($row['server'] != ""){ echo $row['server']; }else{ echo "-"; } ?></td>
-					   </tr>
-					   <?php
-				   }
-
-			   }
-			   ?></table><?php
-
-		   }else if($_GET["page"] == 'warns'){ ?>
+		  }else if(isset($_GET["page"]) && $_GET["page"] == 'warns'){ ?>
 			   <h1 class="animate__animated animate__bounceInDown">Warns</h1> <?php
 
 			   $sql = "SELECT * FROM adminbans_warned_players";
@@ -305,7 +299,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 			   }
 			   ?></table><?php
 
-		   }else if($_GET["page"] == 'kicks'){ ?>
+		   }else if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ ?>
 			   <h1 class="animate__animated animate__bounceInDown">Kicks</h1> <?php
 
 			   $sql = "SELECT * FROM adminbans_kicked_players";

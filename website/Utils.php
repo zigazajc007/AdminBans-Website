@@ -53,6 +53,7 @@ class Utils{
 
 	public static function readCache($key){
 		$data = json_decode(file_get_contents('cache.json'), true);
+		if(!isset($data[$key])) return null;
 		if($data[$key]['expiration'] < time()) return null;
 		return $data[$key]['value'];
 	}

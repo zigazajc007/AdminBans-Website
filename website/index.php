@@ -29,6 +29,9 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 			$activeMobile = 'mainMenuMobileLinkSelected block pl-3 pr-4 py-2 border-l-4 text-base font-medium';
 			$inactiveMobile = 'mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium';
+
+			$ascIcon = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 15l6 -6l6 6"></path></svg>';
+			$descIcon = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 9l6 6l6 -6"></path></svg>';
 		?>
 
 		<nav class="secondaryBackgroundColor shadow">
@@ -98,7 +101,8 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 			</div>
 		</nav>
 
-	  <div class="table">
+		<div class="mx-auto mt-10 mb-20 px-2 sm:px-6 lg:px-8">
+		<div class="max-w-7xl mx-auto">
 
 		  <?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ ?>
 
@@ -150,8 +154,36 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				}
 
 				$result = Utils::executeQuery($sql);
+				?>
 
-				?><table>
+				<div class="flex flex-col">
+				<div class="-my-2 overflow-x-auto -mx-2">
+				<div class="py-2 align-middle inline-block min-w-full px-2">
+				<div class="shadow overflow-hidden border-b passwordsBorderColor rounded-lg">
+				<table class="min-w-full divide-y passwordsBorderColor table-fixed">
+					<thead class="secondaryBackgroundColor">
+						<tr>
+							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+								<a href="/?page=bans&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">
+									<div class="flex justify-start space-x-3">
+										<span>Player</span>
+										<?php
+										if(isset($_GET["order"]) && $_GET["order"] == 'player'){
+											echo $ascIcon;
+										}else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){
+											echo $descIcon;
+										}
+										?>
+									</div>
+								</a>
+							</th>
+							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
+							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Reason</th>
+							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Categories</th>
+							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Players</th>
+							<th scope="col" class="secondaryColor px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Players</th>
+						</tr>
+					</thead>
 					<tr>
 						<th><a href="/?page=bans&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 						<th><a href="/?page=bans&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
@@ -172,9 +204,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
 					</tr>
 					<?php
-				}
-				?></table><?php
-
+				}?>
+				</table>
+				</div>
+				</div>
+				</div>
+				</div>
+			<?php
 		  }else if(isset($_GET["page"]) && $_GET["page"] == 'mutes'){ ?>
 
 				<h1 class="animate__animated animate__bounceInDown">Mutes</h1> <?php
@@ -225,8 +261,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				}
 
 				$result = Utils::executeQuery($sql);
+				?>
 
-				?><table>
+				<div class="flex flex-col">
+				<div class="-my-2 overflow-x-auto -mx-2">
+				<div class="py-2 align-middle inline-block min-w-full px-2">
+				<div class="shadow overflow-hidden border-b passwordsBorderColor rounded-lg">
+				<table class="min-w-full divide-y passwordsBorderColor table-fixed">
 					<tr>
 						<th><a href="/?page=mutes&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 						<th><a href="/?page=mutes&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
@@ -248,9 +289,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
 					</tr>
 					<?php
-				}
-				?></table><?php
-
+				}?>
+			</table>
+			</div>
+			</div>
+			</div>
+			</div>
+			<?php
 		  }else if(isset($_GET["page"]) && $_GET["page"] == 'warns'){ ?>
 				<h1 class="animate__animated animate__bounceInDown">Warns</h1> <?php
 
@@ -294,8 +339,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				}
 
 				$result = Utils::executeQuery($sql);
+				?>
 
-				?><table>
+				<div class="flex flex-col">
+				<div class="-my-2 overflow-x-auto -mx-2">
+				<div class="py-2 align-middle inline-block min-w-full px-2">
+				<div class="shadow overflow-hidden border-b passwordsBorderColor rounded-lg">
+				<table class="min-w-full divide-y passwordsBorderColor table-fixed">
 					<tr>
 						<th><a href="/?page=warns&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 						<th><a href="/?page=warns&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
@@ -314,9 +364,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
 					</tr>
 					<?php
-				}
-				?></table><?php
-
+				}?>
+			</table>
+			</div>
+			</div>
+			</div>
+			</div>
+			<?php
 			}else if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ ?>
 				<h1 class="animate__animated animate__bounceInDown">Kicks</h1> <?php
 
@@ -360,8 +414,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				}
 
 				$result = Utils::executeQuery($sql);
+				?>
 
-				?><table>
+				<div class="flex flex-col">
+				<div class="-my-2 overflow-x-auto -mx-2">
+				<div class="py-2 align-middle inline-block min-w-full px-2">
+				<div class="shadow overflow-hidden border-b passwordsBorderColor rounded-lg">
+				<table class="min-w-full divide-y passwordsBorderColor table-fixed">
 					<tr>
 						<th><a href="/?page=kicks&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 						<th><a href="/?page=kicks&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
@@ -380,13 +439,20 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
 					</tr>
 					<?php
-				}
-				?></table><?php
+				}?>
 
+				</table>
+				<div>
+				<div>
+				<div>
+				<div>
+			<?php
 		  }else{
 				include "main_page.php";
 		  } ?>
 	  </div>
+		</div>
+
 		<script type="module" src="js/index.js"></script>
   </body>
 </html>

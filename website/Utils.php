@@ -44,7 +44,8 @@ class Utils{
 		return $conn;
 	}
 
-	public static function writeCache($key, $value, $ttl = 60){
+	public static function writeCache($key, $value, $ttl = null){
+		if($ttl === null) $ttl = Settings::$cache_data;
 		$data = json_decode(file_get_contents('cache.json'), true);
 		$data[$key] = array('value' => $value, 'expiration' => time() + $ttl);
 		file_put_contents('cache.json', json_encode($data));
@@ -52,12 +53,14 @@ class Utils{
 
 	public static function readCache($key){
 		$data = json_decode(file_get_contents('cache.json'), true);
+		if($data[$key]['expiration'] < time()) return null;
 		return $data[$key]['value'];
 	}
 
 	public static function getRowCount($table = 'adminbans_banned_players', $cache = 60){
 
-		return Utils::readCache('row_count_' . $table);
+		$cachedData = Utils::readCache('row_count_' . $table);
+		if($cachedData !== null) return $cachedData;
 
 		try{
 			$conn = Utils::createConnection();

@@ -12,66 +12,83 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 <!doctype html>
 <html lang="en">
   <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" type="image/ico" href="images/server-icon.png" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/main.css" />
-	<link rel="stylesheet" href="themes/<?php echo Settings::$default_theme; ?>.css" />
-	<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="css/animate.css">
-	<title><?php echo Settings::$server_name; ?></title>
-	<script src="https://kit.fontawesome.com/445ee3669f.js" crossorigin="anonymous"></script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><?= Settings::$server_name ?></title>
+		<meta name="author" content="Rabbit Company" />
+		<link rel="shortcut icon" type="image/png" href="/images/server-icon.png"/>
+		<link type="text/css" rel="stylesheet" href="/css/tailwind.min.css" />
+		<link type="text/css" rel="stylesheet" href="/css/index.css" />
+		<link type="text/css" rel="stylesheet" href="/css/themes/<?= Settings::$default_theme ?>.css" />
   </head>
-  <body>
-	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		  <a class="navbar-brand" href="#">
-			<img src="images/server-icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
-			<?php echo Settings::$server_name; ?>
-		  </a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
+  <body class="primaryBackgroundColor">
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		  <ul class="navbar-nav mr-auto">
-			<li class="nav-item <?php if(!isset($_GET["page"]) || $_GET["page"] == ''){ echo "active"; } ?>">
-			  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-			</li>
-			<?php if(Settings::$store_link != null){ ?>
-			<li>
-			  <a class="nav-link" target="_blank" href="<?php echo Settings::$store_link; ?>">Store</a>
-			</li>
-			<?php } ?>
-			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ echo "active"; } ?>">
-			  <a class="nav-link" href="/?page=bans">Bans <span class="badge badge-pill badge-light"><?php echo $ban_count; ?></span></a>
-			</li>
-			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'mutes'){ echo "active"; } ?>">
-			  <a class="nav-link" href="/?page=mutes">Mutes <span class="badge badge-pill badge-light"><?php echo $mute_count; ?></span></a>
-			</li>
-			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'warns'){ echo "active"; } ?>">
-			  <a class="nav-link" href="/?page=warns">Warns <span class="badge badge-pill badge-light"><?php echo $warn_count; ?></span></a>
-			</li>
-			<li class="nav-item <?php if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ echo "active"; } ?>">
-			  <a class="nav-link" href="/?page=kicks">Kicks <span class="badge badge-pill badge-light"><?php echo $kick_count; ?></span></a>
-			</li>
-			<?php if(Settings::$discord_link != null){ ?>
-			<li>
-			  <a class="nav-link" target="_blank" href="<?php echo Settings::$discord_link; ?>">Discord</a>
-			</li>
-			<?php } ?>
-		  </ul>
-		  <?php if(!empty($_GET)){ ?>
-			  <form class="form-inline my-2 my-lg-0" method="get">
-				<input type="hidden" name="page" id="page" value="<?php echo $_GET["page"]; ?>">
-				<input class="form-control mr-sm-2" type="search" name="player" id="player" placeholder="Player" aria-label="Search">
-				<button class="btn btn-outline-success" type="submit">Check</button>
-			  </form>
-		  <?php }else{ ?>
-					<a class="btn btn-outline-primary" href="panel.php" role="button">Log in</a>
-		  <?php } ?>
-		</div>
-	  </nav>
+		<?php
+			$active = 'mainMenuLinkSelected inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
+			$inactive = 'mainMenuLink border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium';
+
+			$activeMobile = 'mainMenuMobileLinkSelected block pl-3 pr-4 py-2 border-l-4 text-base font-medium';
+			$inactiveMobile = 'mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium';
+		?>
+
+		<nav class="secondaryBackgroundColor shadow">
+			<div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+				<div class="flex justify-between h-16">
+					<div class="flex px-2 lg:px-0">
+						<div class="flex-shrink-0 flex items-center">
+							<a href="/"><img class="h-8 w-auto" width="32" height="32" src="images/server-icon.png" alt="<?= Settings::$server_name ?>"></a>
+						</div>
+						<div class="hidden lg:ml-6 lg:flex lg:space-x-6">
+							<a href="/" class="<?php if(!isset($_GET["page"]) || $_GET["page"] == ''){ echo $active; }else{ echo $inactive; } ?>">Home</a>
+							<?php if(Settings::$store_link != null){ ?>
+								<a href="<?= Settings::$store_link ?>" target="_blank" class="mainMenuLink border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Store</a>
+							<?php } ?>
+							<a href="/?page=bans" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ echo $active; }else{ echo $inactive; } ?>">Bans <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $ban_count ?></span></a>
+							<a href="/?page=mutes" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'mutes'){ echo $active; }else{ echo $inactive; } ?>">Mutes <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $mute_count ?></span></a>
+							<a href="/?page=warns" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'warns'){ echo $active; }else{ echo $inactive; } ?>">Warns <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $warn_count ?></span></a>
+							<a href="/?page=kicks" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ echo $active; }else{ echo $inactive; } ?>">Kicks <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $kick_count ?></span></a>
+							<?php if(Settings::$discord_link != null){ ?>
+								<a href="<?= Settings::$discord_link ?>" target="_blank" class="mainMenuLink border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discord</a>
+							<?php } ?>
+						</div>
+					</div>
+					<?php if(!empty($_GET)){ ?>
+					<div class="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
+            <div class="flex-shrink-0">
+              <span class="relative z-0 inline-flex shadow-sm rounded-md">
+                <input type="text" id="search" class="relative inline-flex shadow focus:outline-none px-4 py-2 sm:text-sm rounded-md" enterKeyHint="Done" placeholder="Search">
+              </span>
+            </div>
+          </div>
+					<?php }else{ ?>
+					<div class="hidden flex-1 flex items-center justify-center px-2 lg:ml-6 lg:flex lg:justify-end">
+						<div id="login-nav" class="flex-shrink-0">
+							<a href="panel.php" class="primaryButton px-3 py-2 rounded-md text-sm font-medium">Log in</a>
+						</div>
+					</div>
+					<?php } ?>
+					<div class="flex items-center lg:hidden">
+						<button id="menu-toggle-btn" type="button" class="main-menu-toggle-btn inline-flex items-center justify-center p-2 rounded-md focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
+							<span class="sr-only">Open main menu</span>
+							<svg id="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" class="block h-6 w-6" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+								<line x1="4" y1="6" x2="20" y2="6" />
+								<line x1="4" y1="12" x2="20" y2="12" />
+								<line x1="4" y1="18" x2="20" y2="18" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="lg:hidden">
+				<div id="mobile-menu" class="hidden pt-2 pb-3 space-y-1">
+					<a href="index.html" class="mainMenuMobileLinkSelected block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Minecraft Servers</a>
+					<a href="discord.html" class="mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Discord Servers</a>
+					<a href="panel.html" class="mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Panel</a>
+				</div>
+			</div>
+		</nav>
 
 	  <div class="table">
 
@@ -362,8 +379,6 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				include "main_page.php";
 		  } ?>
 	  </div>
-
-	  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+		<script type="module" src="js/index.js"></script>
   </body>
 </html>

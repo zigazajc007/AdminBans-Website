@@ -1,0 +1,22 @@
+{
+  "name": "admin-bans-website",
+  "version": "1.0.0",
+  "description": "Website interface for managing and monitoring Minecraft bans, mutes, warns and kicks",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tailwindcss -i ./tailwind.css -o ./website/css/tailwind.min.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zigazajc007/AdminBans-Website.git"
+  },
+  "author": "Rabbit Company LLC",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/zigazajc007/AdminBans-Website/issues"
+  },
+  "homepage": "https://github.com/zigazajc007/AdminBans-Website#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
+  }
+}

@@ -4,7 +4,7 @@
 $server_name = "Server Name";
 
 //Database
-$mysql_host = "localhost";
+$mysql_host = "127.0.0.1";
 $mysql_port = "3306";
 $mysql_database = "AdminBans";
 $mysql_user = "root";
@@ -32,13 +32,13 @@ $store_link = "Your Link Here";
 
 /* Website for player heads:
 
-    Options:
-        - "https://crafatar.com/avatars/{uuid}?size=20"
-        - "http://cravatar.eu/avatar/{uuid}/20.png"
-        - "https://mc-heads.net/avatar/{uuid}/20"
-        - "https://minotar.net/avatar/{uuid}/20"
-        - "https://visage.surgeplay.com/face/20/{uuid}"
-        - null
+	Options:
+		- "https://crafatar.com/avatars/{uuid}?size=20"
+		- "http://cravatar.eu/avatar/{uuid}/20.png"
+		- "https://mc-heads.net/avatar/{uuid}/20"
+		- "https://minotar.net/avatar/{uuid}/20"
+		- "https://visage.surgeplay.com/face/20/{uuid}"
+		- null
 
 */
 $heads_link = "https://crafatar.com/avatars/{uuid}?size=20";

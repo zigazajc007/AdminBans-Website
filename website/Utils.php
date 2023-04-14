@@ -2,6 +2,9 @@
 include_once 'Settings.php';
 
 class Utils{
+
+	public static $cache = null;
+
 	public static function chatColor($text){
 
 		if (strpos($text, '&') !== false) {
@@ -46,13 +49,22 @@ class Utils{
 
 	public static function writeCache($key, $value, $ttl = null){
 		if($ttl === null) $ttl = Settings::$cache_data;
-		$data = json_decode(file_get_contents('cache.json'), true);
+
+		$data = Utils::$cache;
+		if($data === null){
+			$data = json_decode(file_get_contents('cache.json'), true);
+		}
 		$data[$key] = array('value' => $value, 'expiration' => time() + $ttl);
 		file_put_contents('cache.json', json_encode($data));
+		Utils::$cache = $data;
 	}
 
 	public static function readCache($key){
-		$data = json_decode(file_get_contents('cache.json'), true);
+		$data = Utils::$cache;
+		if($data === null){
+			$data = json_decode(file_get_contents('cache.json'), true);
+			Utils::$cache = $data;
+		}
 		if(!isset($data[$key])) return null;
 		if($data[$key]['expiration'] < time()) return null;
 		return $data[$key]['value'];

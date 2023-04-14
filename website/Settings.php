@@ -10,7 +10,7 @@ class Settings{
 	public static $mysql_port = "3306";
 	public static $mysql_database = "s182_adminbans";
 	public static $mysql_user = "u182_EphvwweB8S";
-	public static $mysql_password = "EuHa^!6hNtp3erOs4KjS8HCd";
+	public static $mysql_password = "Dg!=G!REcXlaXk4RXdjR8tGc";
 
 	// Login data for Admin Bans panel (Please don't use default password)
 	public static $login_username = "admin";

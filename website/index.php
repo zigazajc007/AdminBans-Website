@@ -1,26 +1,11 @@
 <?php
-include "settings.php";
-include "functions.php";
+include_once "Settings.php";
+include_once "Utils.php";
 
-$conn = null;
-try{
-	$conn = new PDO('mysql:host=' . $mysql_host . ';port=' . $mysql_port . ';dbname=' . $mysql_database, $mysql_user, $mysql_password);
-	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-	die("Connection failed: " . $e->getMessage());
-}
-
-$sql="SELECT * FROM adminbans_banned_players";
-if ($result=mysqli_query($conn,$sql)){ $ban_count=mysqli_num_rows($result); }
-
-$sql="SELECT * FROM adminbans_muted_players";
-if ($result=mysqli_query($conn,$sql)){ $mute_count=mysqli_num_rows($result); }
-
-$sql="SELECT * FROM adminbans_warned_players";
-if ($result=mysqli_query($conn,$sql)){ $warn_count=mysqli_num_rows($result); }
-
-$sql="SELECT * FROM adminbans_kicked_players";
-if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
+$ban_count = Utils::getRowCount('adminbans_banned_players');
+$mute_count = Utils::getRowCount('adminbans_muted_players');
+$warn_count = Utils::getRowCount('adminbans_warned_players');
+$kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 ?>
 
@@ -32,17 +17,17 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 	<link rel="icon" type="image/ico" href="images/server-icon.png" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/main.css" />
-	<link rel="stylesheet" href="themes/<?php echo $default_theme; ?>.css" />
+	<link rel="stylesheet" href="themes/<?php echo Settings::$default_theme; ?>.css" />
 	<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/animate.css">
-	<title><?php echo $server_name; ?></title>
+	<title><?php echo Settings::$server_name; ?></title>
 	<script src="https://kit.fontawesome.com/445ee3669f.js" crossorigin="anonymous"></script>
   </head>
   <body>
 	  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		  <a class="navbar-brand" href="#">
 			<img src="images/server-icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
-			<?php echo $server_name; ?>
+			<?php echo Settings::$server_name; ?>
 		  </a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
@@ -53,9 +38,9 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 			<li class="nav-item <?php if($_GET["page"] == ''){ echo "active"; } ?>">
 			  <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
 			</li>
-			<?php if($store_link != null){ ?>
+			<?php if(Settings::$store_link != null){ ?>
 			<li>
-			  <a class="nav-link" target="_blank" href="<?php echo $store_link; ?>">Store</a>
+			  <a class="nav-link" target="_blank" href="<?php echo Settings::$store_link; ?>">Store</a>
 			</li>
 			<?php } ?>
 			<li class="nav-item <?php if($_GET["page"] == 'bans'){ echo "active"; } ?>">
@@ -70,9 +55,9 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 			<li class="nav-item <?php if($_GET["page"] == 'kicks'){ echo "active"; } ?>">
 			  <a class="nav-link" href="index.php?page=kicks">Kicks <span class="badge badge-pill badge-light"><?php echo $kick_count; ?></span></a>
 			</li>
-			<?php if($discord_link != null){ ?>
+			<?php if(Settings::$discord_link != null){ ?>
 			<li>
-			  <a class="nav-link" target="_blank" href="<?php echo $discord_link; ?>">Discord</a>
+			  <a class="nav-link" target="_blank" href="<?php echo Settings::$discord_link; ?>">Discord</a>
 			</li>
 			<?php } ?>
 		  </ul>
@@ -95,7 +80,7 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 					<h1 class="animate__animated animate__bounceInDown">Bans</h1> <?php
 
 					$sql = "SELECT * FROM adminbans_banned_players";
-					$limit = "LIMIT " . $data_limit;
+					$limit = "LIMIT " . Settings::$data_limit;
 
 					if($_GET["player"] != ''){
 						$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
@@ -178,7 +163,7 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 			   <h1 class="animate__animated animate__bounceInDown">Mutes</h1> <?php
 
 			   $sql = "SELECT * FROM adminbans_muted_players";
-			   $limit = "LIMIT " . $data_limit;
+			   $limit = "LIMIT " . Settings::$data_limit;
 
 			   if($_GET["player"] != ''){
 				   $sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
@@ -260,7 +245,7 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 			   <h1 class="animate__animated animate__bounceInDown">Warns</h1> <?php
 
 			   $sql = "SELECT * FROM adminbans_warned_players";
-			   $limit = "LIMIT " . $data_limit;
+			   $limit = "LIMIT " . Settings::$data_limit;
 
 			   if($_GET["player"] != ''){
 				   $sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
@@ -334,7 +319,7 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 			   <h1 class="animate__animated animate__bounceInDown">Kicks</h1> <?php
 
 			   $sql = "SELECT * FROM adminbans_kicked_players";
-			   $limit = "LIMIT " . $data_limit;
+			   $limit = "LIMIT " . Settings::$data_limit;
 
 			   if($_GET["player"] != ''){
 				   $sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
@@ -406,7 +391,6 @@ if ($result=mysqli_query($conn,$sql)){ $kick_count=mysqli_num_rows($result); }
 			   $conn->close();
 		   }else{
 			   include "main_page.php";
-			   $conn->close();
 		   } ?>
 	  </div>
 

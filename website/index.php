@@ -83,9 +83,17 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 			<div class="lg:hidden">
 				<div id="mobile-menu" class="hidden pt-2 pb-3 space-y-1">
-					<a href="index.html" class="mainMenuMobileLinkSelected block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Minecraft Servers</a>
-					<a href="discord.html" class="mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Discord Servers</a>
-					<a href="panel.html" class="mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Panel</a>
+					<a href="/" class="<?php if(!isset($_GET["page"]) || $_GET["page"] == ''){ echo $activeMobile; }else{ echo $inactiveMobile; } ?>">Home</a>
+					<?php if(Settings::$store_link != null){ ?>
+						<a href="<?= Settings::$store_link ?>" target="_blank" class="mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Store</a>
+					<?php } ?>
+					<a href="/?page=bans" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ echo $activeMobile; }else{ echo $inactiveMobile; } ?>">Bans <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $ban_count ?></span></a>
+					<a href="/?page=mutes" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'mutes'){ echo $activeMobile; }else{ echo $inactiveMobile; } ?>">Mutes <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $mute_count ?></span></a>
+					<a href="/?page=warns" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'warns'){ echo $activeMobile; }else{ echo $inactiveMobile; } ?>">Warns <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $warn_count ?></span></a>
+					<a href="/?page=kicks" class="<?php if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ echo $activeMobile; }else{ echo $inactiveMobile; } ?>">Kicks <span class="grayBadge ml-3 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"><?= $kick_count ?></span></a>
+					<?php if(Settings::$discord_link != null){ ?>
+						<a href="<?= Settings::$discord_link ?>" target="_blank" class="mainMenuMobileLink block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Discord</a>
+					<?php } ?>
 				</div>
 			</div>
 		</nav>

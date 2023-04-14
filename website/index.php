@@ -103,8 +103,9 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 		  <?php if(isset($_GET["page"]) && $_GET["page"] == 'bans'){ ?>
 
-				<h1 class="animate__animated animate__bounceInDown">Bans</h1> <?php
+				<h1 class="text-2xl font-medium mb-2 leading-6 tertiaryColor">Bans</h1>
 
+				<?php
 				$sql = "SELECT * FROM adminbans_banned_players";
 				$limit = "LIMIT " . Settings::$data_limit;
 				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
@@ -172,13 +173,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 					<tbody class="secondaryBackgroundColor divide-y passwordsBorderColor">
 					<?php
 						for($i = 0; $i < count($result); $i++){
-							?><tr>
-								<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
-								<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
-								<td><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
-								<td><?php echo $result[$i]['created']; ?></td>
-								<td><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
-								<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
+							?><tr class='passwordsBorderColor'>
+								<td class="tertiaryColor py-4 px-4"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_to']; ?></span></div></td>
+								<td class="tertiaryColor py-4 px-4"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_from']; ?></span></div></td>
+								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
+								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
+								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
+								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
 							</tr>
 							<?php
 						}?>

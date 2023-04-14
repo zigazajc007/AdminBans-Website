@@ -371,45 +371,48 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				</div>
 			<?php
 			}else if(isset($_GET["page"]) && $_GET["page"] == 'kicks'){ ?>
-				<h1 class="animate__animated animate__bounceInDown">Kicks</h1> <?php
 
+				<h1 class="text-2xl font-medium mb-2 leading-6 tertiaryColor">Kicks</h1>
+
+				<?php
 				$sql = "SELECT * FROM adminbans_kicked_players";
 				$limit = "LIMIT " . Settings::$data_limit;
+				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
 
 				if(isset($_GET["player"]) && $_GET["player"] != ''){
 					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+				}else if(isset($_GET["moderator"]) && $_GET["moderator"] != ''){
+					$sql = $sql . " WHERE username_from = '" . $_GET["moderator"] . "'";
 				}
 
-				if(isset($_GET["order"])){
-					switch ($_GET["order"]) {
-						case 'player':
-							$sql = $sql . " ORDER BY username_to " . $limit;
-							break;
-						case 'player_desc':
-							$sql = $sql . " ORDER BY username_to desc " . $limit;
-							break;
-						case 'moderator':
-							$sql = $sql . " ORDER BY username_from " . $limit;
-							break;
-						case 'moderator_desc':
-							$sql = $sql . " ORDER BY username_from desc " . $limit;
-							break;
-						case 'date':
-							$sql = $sql . " ORDER BY created " . $limit;
-							break;
-						case 'date_desc':
-							$sql = $sql . " ORDER BY created desc " . $limit;
-							break;
-						case 'server':
-							$sql = $sql . " ORDER BY until " . $limit;
-							break;
-						case 'server_desc':
-							$sql = $sql . " ORDER BY until desc " . $limit;
-							break;
-						default:
-							$sql = $sql . " " . $limit;
-							break;
-					}
+				switch ($order) {
+					case 'player':
+						$sql = $sql . " ORDER BY username_to " . $limit;
+						break;
+					case 'player_desc':
+						$sql = $sql . " ORDER BY username_to desc " . $limit;
+						break;
+					case 'moderator':
+						$sql = $sql . " ORDER BY username_from " . $limit;
+						break;
+					case 'moderator_desc':
+						$sql = $sql . " ORDER BY username_from desc " . $limit;
+						break;
+					case 'date':
+						$sql = $sql . " ORDER BY created " . $limit;
+						break;
+					case 'date_desc':
+						$sql = $sql . " ORDER BY created desc " . $limit;
+						break;
+					case 'server':
+						$sql = $sql . " ORDER BY until " . $limit;
+						break;
+					case 'server_desc':
+						$sql = $sql . " ORDER BY until desc " . $limit;
+						break;
+					default:
+						$sql = $sql . " " . $limit;
+						break;
 				}
 
 				$result = Utils::executeQuery($sql);
@@ -420,26 +423,30 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				<div class="py-2 align-middle inline-block min-w-full px-2">
 				<div class="shadow overflow-hidden border-b passwordsBorderColor rounded-lg">
 				<table class="min-w-full divide-y passwordsBorderColor table-fixed">
-					<tr>
-						<th><a href="/?page=kicks&order=player<?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if(isset($_GET["order"]) && $_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th><a href="/?page=kicks&order=moderator<?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if(isset($_GET["order"]) && $_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th>Reason</th>
-						<th><a href="/?page=kicks&order=date<?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if(isset($_GET["order"]) && $_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-						<th><a href="/?page=kicks&order=expires<?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if(isset($_GET["order"]) && $_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if(isset($_GET["order"]) && $_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					</tr>
-				<?php
-
-				for($i = 0; $i < count($result); $i++){
-					?><tr>
-						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
-						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
-						<td><?php echo Utils::chatColor($result[$i]['reason']); ?></td>
-						<td><?php echo $result[$i]['created']; ?></td>
-						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
-					</tr>
+					<thead class="secondaryBackgroundColor">
+						<tr>
+							<?php
+								echo Utils::generateHeader('kicks', 'player', 'Player', $order);
+								echo Utils::generateHeader('kicks', 'moderator', 'Moderator', $order);
+								echo Utils::generateHeader('kicks', 'reason', 'Reason', $order, 0);
+								echo Utils::generateHeader('kicks', 'date', 'Date', $order);
+								echo Utils::generateHeader('kicks', 'server', 'Server', $order);
+							?>
+						</tr>
+					</thead>
+					<tbody class="secondaryBackgroundColor divide-y passwordsBorderColor">
 					<?php
-				}?>
-
+						for($i = 0; $i < count($result); $i++){
+							?><tr class='passwordsBorderColor'>
+								<td class="tertiaryColor py-4 px-4"><a href="/?page=kicks&player=<?= $result[$i]['username_to'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_to']; ?></span></div></a></td>
+								<td class="tertiaryColor py-4 px-4"><a href="/?page=kicks&moderator=<?= $result[$i]['username_from'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_from']; ?></span></div></a></td>
+								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
+								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
+								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=kicks&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+							</tr>
+							<?php
+						}?>
+					</tbody>
 				</table>
 				<div>
 				<div>

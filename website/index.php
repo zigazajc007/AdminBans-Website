@@ -109,13 +109,17 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				$sql = "SELECT * FROM adminbans_banned_players";
 				$limit = "LIMIT " . Settings::$data_limit;
 				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
+				$parms = [];
 
 				if(isset($_GET["player"]) && $_GET["player"] != ''){
-					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+					$parms[':player'] = [ 'value' => $_GET["player"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_to = :player";
 				}else if(isset($_GET["moderator"]) && $_GET["moderator"] != ''){
-					$sql = $sql . " WHERE username_from = '" . $_GET["moderator"] . "'";
+					$parms[':moderator'] = [ 'value' => $_GET["moderator"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_from = :moderator";
 				}else if(isset($_GET["server"]) && $_GET["server"] != ''){
-					$sql = $sql . " WHERE server = '" . $_GET["server"] . "'";
+					$parms[':server'] = [ 'value' => $_GET["server"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE server = :server";
 				}
 
 				switch ($order) {
@@ -154,7 +158,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						break;
 				}
 
-				$result = Utils::executeQuery($sql);
+				$result = Utils::executeQuery($sql, $parms);
 				?>
 
 				<div class="flex flex-col">
@@ -202,13 +206,17 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				$sql = "SELECT * FROM adminbans_muted_players";
 				$limit = "LIMIT " . Settings::$data_limit;
 				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
+				$parms = [];
 
 				if(isset($_GET["player"]) && $_GET["player"] != ''){
-					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+					$parms[':player'] = [ 'value' => $_GET["player"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_to = :player";
 				}else if(isset($_GET["moderator"]) && $_GET["moderator"] != ''){
-					$sql = $sql . " WHERE username_from = '" . $_GET["moderator"] . "'";
+					$parms[':moderator'] = [ 'value' => $_GET["moderator"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_from = :moderator";
 				}else if(isset($_GET["server"]) && $_GET["server"] != ''){
-					$sql = $sql . " WHERE server = '" . $_GET["server"] . "'";
+					$parms[':server'] = [ 'value' => $_GET["server"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE server = :server";
 				}
 
 				switch ($order) {
@@ -247,7 +255,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						break;
 				}
 
-				$result = Utils::executeQuery($sql);
+				$result = Utils::executeQuery($sql, $parms);
 				?>
 
 				<div class="flex flex-col">
@@ -271,12 +279,12 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				<?php
 						for($i = 0; $i < count($result); $i++){
 							?><tr class='passwordsBorderColor'>
-								<td class="tertiaryColor py-4 px-4"><a href="/?page=bans&player=<?= $result[$i]['username_to'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_to']; ?></span></div></a></td>
-								<td class="tertiaryColor py-4 px-4"><a href="/?page=bans&moderator=<?= $result[$i]['username_from'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_from']; ?></span></div></a></td>
+								<td class="tertiaryColor py-4 px-4"><a href="/?page=mutes&player=<?= $result[$i]['username_to'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_to']; ?></span></div></a></td>
+								<td class="tertiaryColor py-4 px-4"><a href="/?page=mutes&moderator=<?= $result[$i]['username_from'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_from']; ?></span></div></a></td>
 								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
-								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=bans&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=mutes&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
 							</tr>
 							<?php
 						}?>
@@ -295,11 +303,17 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				$sql = "SELECT * FROM adminbans_warned_players";
 				$limit = "LIMIT " . Settings::$data_limit;
 				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
+				$parms = [];
 
 				if(isset($_GET["player"]) && $_GET["player"] != ''){
-					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+					$parms[':player'] = [ 'value' => $_GET["player"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_to = :player";
 				}else if(isset($_GET["moderator"]) && $_GET["moderator"] != ''){
-					$sql = $sql . " WHERE username_from = '" . $_GET["moderator"] . "'";
+					$parms[':moderator'] = [ 'value' => $_GET["moderator"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_from = :moderator";
+				}else if(isset($_GET["server"]) && $_GET["server"] != ''){
+					$parms[':server'] = [ 'value' => $_GET["server"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE server = :server";
 				}
 
 				switch ($order) {
@@ -332,7 +346,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						break;
 				}
 
-				$result = Utils::executeQuery($sql);
+				$result = Utils::executeQuery($sql, $parms);
 				?>
 
 				<div class="flex flex-col">
@@ -378,11 +392,17 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 				$sql = "SELECT * FROM adminbans_kicked_players";
 				$limit = "LIMIT " . Settings::$data_limit;
 				$order = (isset($_GET["order"])) ? $_GET["order"] : null;
+				$parms = [];
 
 				if(isset($_GET["player"]) && $_GET["player"] != ''){
-					$sql = $sql . " WHERE username_to = '" . $_GET["player"] . "'";
+					$parms[':player'] = [ 'value' => $_GET["player"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_to = :player";
 				}else if(isset($_GET["moderator"]) && $_GET["moderator"] != ''){
-					$sql = $sql . " WHERE username_from = '" . $_GET["moderator"] . "'";
+					$parms[':moderator'] = [ 'value' => $_GET["moderator"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE username_from = :moderator";
+				}else if(isset($_GET["server"]) && $_GET["server"] != ''){
+					$parms[':server'] = [ 'value' => $_GET["server"], 'type' => PDO::PARAM_STR];
+					$sql = $sql . " WHERE server = :server";
 				}
 
 				switch ($order) {
@@ -415,7 +435,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 						break;
 				}
 
-				$result = Utils::executeQuery($sql);
+				$result = Utils::executeQuery($sql, $parms);
 				?>
 
 				<div class="flex flex-col">

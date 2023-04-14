@@ -169,19 +169,20 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 							?>
 						</tr>
 					</thead>
-				<?php
-
-				for($i = 0; $i < count($result); $i++){
-					?><tr>
-						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
-						<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
-						<td><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
-						<td><?php echo $result[$i]['created']; ?></td>
-						<td><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
-						<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
-					</tr>
+					<tbody class="secondaryBackgroundColor divide-y passwordsBorderColor">
 					<?php
-				}?>
+						for($i = 0; $i < count($result); $i++){
+							?><tr>
+								<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_to'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_to']; ?></td>
+								<td><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo " " . $result[$i]['username_from']; ?></td>
+								<td><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
+								<td><?php echo $result[$i]['created']; ?></td>
+								<td><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
+								<td><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></td>
+							</tr>
+							<?php
+						}?>
+					</tbody>
 				</table>
 				</div>
 				</div>

@@ -57,7 +57,7 @@ class Utils{
 		return $data[$key]['value'];
 	}
 
-	public static function getRowCount($table = 'adminbans_banned_players', $cache = 60){
+	public static function getRowCount($table = 'adminbans_banned_players'){
 
 		$cachedData = Utils::readCache('row_count_' . $table);
 		if($cachedData !== null) return $cachedData;
@@ -69,11 +69,39 @@ class Utils{
 			$stmt->execute();
 
 			$amount = $stmt->fetchColumn();
-			Utils::writeCache('row_count_' . $table, $amount, $cache);
+			Utils::writeCache('row_count_' . $table, $amount);
 			return $amount;
 		}catch(PDOException $e) {
 			Utils::writeCache('row_count_' . $table, -1, 5);
 			return -1;
+		}
+	}
+
+	public static function executeQuery($query, $parms = []){
+
+		$queryHash = hash('sha256', $query);
+
+		$cachedData = Utils::readCache('query_' . $queryHash);
+		if($cachedData !== null) return $cachedData;
+
+		try{
+			$conn = Utils::createConnection();
+
+			$stmt = $conn->prepare($query);
+
+			$keys = array_keys($parms);
+			for($i = 0; $i < count($keys); $i++){
+				$stmt->bindParam($keys[$i], $parms[$keys[$i]]['value'], $parms[$keys[$i]]['type']);
+			}
+
+			$stmt->execute();
+
+			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			Utils::writeCache('rows_' . $queryHash, $data);
+			return $data;
+		}catch(PDOException $e) {
+			Utils::writeCache('rows_' . $queryHash, null, 5);
+			return null;
 		}
 	}
 }

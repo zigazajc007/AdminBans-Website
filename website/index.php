@@ -36,7 +36,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		  <ul class="navbar-nav mr-auto">
 			<li class="nav-item <?php if($_GET["page"] == ''){ echo "active"; } ?>">
-			  <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+			  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 			</li>
 			<?php if(Settings::$store_link != null){ ?>
 			<li>
@@ -44,16 +44,16 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 			</li>
 			<?php } ?>
 			<li class="nav-item <?php if($_GET["page"] == 'bans'){ echo "active"; } ?>">
-			  <a class="nav-link" href="index.php?page=bans">Bans <span class="badge badge-pill badge-light"><?php echo $ban_count; ?></span></a>
+			  <a class="nav-link" href="/?page=bans">Bans <span class="badge badge-pill badge-light"><?php echo $ban_count; ?></span></a>
 			</li>
 			<li class="nav-item <?php if($_GET["page"] == 'mutes'){ echo "active"; } ?>">
-			  <a class="nav-link" href="index.php?page=mutes">Mutes <span class="badge badge-pill badge-light"><?php echo $mute_count; ?></span></a>
+			  <a class="nav-link" href="/?page=mutes">Mutes <span class="badge badge-pill badge-light"><?php echo $mute_count; ?></span></a>
 			</li>
 			<li class="nav-item <?php if($_GET["page"] == 'warns'){ echo "active"; } ?>">
-			  <a class="nav-link" href="index.php?page=warns">Warns <span class="badge badge-pill badge-light"><?php echo $warn_count; ?></span></a>
+			  <a class="nav-link" href="/?page=warns">Warns <span class="badge badge-pill badge-light"><?php echo $warn_count; ?></span></a>
 			</li>
 			<li class="nav-item <?php if($_GET["page"] == 'kicks'){ echo "active"; } ?>">
-			  <a class="nav-link" href="index.php?page=kicks">Kicks <span class="badge badge-pill badge-light"><?php echo $kick_count; ?></span></a>
+			  <a class="nav-link" href="/?page=kicks">Kicks <span class="badge badge-pill badge-light"><?php echo $kick_count; ?></span></a>
 			</li>
 			<?php if(Settings::$discord_link != null){ ?>
 			<li>
@@ -126,12 +126,12 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 					?><table>
 						<tr>
-							<th><a href="index.php?page=bans&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a href="index.php?page=bans&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+							<th><a href="/?page=bans&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+							<th><a href="/?page=bans&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 							<th><a>Reason</a></th>
-							<th><a href="index.php?page=bans&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a href="index.php?page=bans&order=expires<?php if($_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if($_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-							<th><a href="index.php?page=bans&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+							<th><a href="/?page=bans&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+							<th><a href="/?page=bans&order=expires<?php if($_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if($_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+							<th><a href="/?page=bans&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 						</tr>
 					<?php
 
@@ -209,12 +209,12 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 			   ?><table>
 				   <tr>
-					   <th><a href="index.php?page=mutes&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=mutes&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=mutes&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=mutes&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 					   <th>Reason</th>
-					   <th><a href="index.php?page=mutes&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=mutes&order=expires<?php if($_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if($_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=mutes&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=mutes&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=mutes&order=expires<?php if($_GET["order"] == 'expires'){ echo "_desc"; } ?>">Expires <?php if($_GET["order"] == 'expires'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'expires_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=mutes&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 				   </tr>
 			   <?php
 
@@ -285,11 +285,11 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 			   ?><table>
 				   <tr>
-					   <th><a href="index.php?page=warns&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=warns&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=warns&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=warns&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 					   <th>Reason</th>
-					   <th><a href="index.php?page=warns&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=warns&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=warns&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=warns&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 				   </tr>
 			   <?php
 
@@ -359,11 +359,11 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 
 			   ?><table>
 				   <tr>
-					   <th><a href="index.php?page=kicks&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=kicks&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=kicks&order=player<?php if($_GET["order"] == 'player'){ echo "_desc"; } ?>">Player <?php if($_GET["order"] == 'player'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'player_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=kicks&order=moderator<?php if($_GET["order"] == 'moderator'){ echo "_desc"; } ?>">Moderator <?php if($_GET["order"] == 'moderator'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'moderator_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 					   <th>Reason</th>
-					   <th><a href="index.php?page=kicks&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
-					   <th><a href="index.php?page=kicks&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=kicks&order=date<?php if($_GET["order"] == 'date'){ echo "_desc"; } ?>">Date <?php if($_GET["order"] == 'date'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'date_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
+					   <th><a href="/?page=kicks&order=expires<?php if($_GET["order"] == 'server'){ echo "_desc"; } ?>">Server <?php if($_GET["order"] == 'server'){?> <i class="fas fa-sort-up"></i> <?php }else if($_GET["order"] == 'server_desc'){ ?> <i class="fas fa-sort-down"></i> <?php } ?></a></th>
 				   </tr>
 			   <?php
 

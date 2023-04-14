@@ -61,11 +61,13 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
             </div>
           </div>
 					<?php }else{ ?>
+					<!--
 					<div class="hidden flex-1 flex items-center justify-center px-2 lg:ml-6 lg:flex lg:justify-end">
 						<div id="login-nav" class="flex-shrink-0">
 							<a href="panel.php" class="primaryButton px-3 py-2 rounded-md text-sm font-medium">Log in</a>
 						</div>
 					</div>
+					-->
 					<?php } ?>
 					<div class="flex items-center lg:hidden">
 						<button id="menu-toggle-btn" type="button" class="main-menu-toggle-btn inline-flex items-center justify-center p-2 rounded-md focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">

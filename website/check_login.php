@@ -40,7 +40,7 @@ if($login_hcaptcha){
 	}
 }
 }else{
-	$_SESSION["msg"] = "Ne dela !";
+	$_SESSION["msg"] = "Missing login creditions!";
 	$_SESSION["color"] = "alert-danger";
 	header("Location: panel.php");
 }

@@ -176,7 +176,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								echo Utils::generateHeader('bans', 'reason', 'Reason', $order, 0);
 								echo Utils::generateHeader('bans', 'date', 'Date', $order);
 								echo Utils::generateHeader('bans', 'expires', 'Expires', $order);
-								echo Utils::generateHeader('bans', 'server', 'Server', $order);
+								if(Settings::$show_servers) echo Utils::generateHeader('bans', 'server', 'Server', $order);
 							?>
 						</tr>
 					</thead>
@@ -189,7 +189,9 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
-								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=bans&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php if(Settings::$show_servers){ ?>
+									<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=bans&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php } ?>
 							</tr>
 							<?php
 						}?>
@@ -273,7 +275,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								echo Utils::generateHeader('mutes', 'reason', 'Reason', $order, 0);
 								echo Utils::generateHeader('mutes', 'date', 'Date', $order);
 								echo Utils::generateHeader('mutes', 'expires', 'Expires', $order);
-								echo Utils::generateHeader('mutes', 'server', 'Server', $order);
+								if(Settings::$show_servers) echo Utils::generateHeader('mutes', 'server', 'Server', $order);
 							?>
 						</tr>
 					</thead>
@@ -286,7 +288,9 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php if($result[$i]['until'] == '9999-12-31 23:59:59'){ echo 'Never'; }else{ echo $result[$i]['until']; } ?></td>
-								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=mutes&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php if(Settings::$show_servers){ ?>
+									<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=mutes&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php } ?>
 							</tr>
 							<?php
 						}?>
@@ -363,7 +367,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								echo Utils::generateHeader('warns', 'moderator', 'Moderator', $order);
 								echo Utils::generateHeader('warns', 'reason', 'Reason', $order, 0);
 								echo Utils::generateHeader('warns', 'date', 'Date', $order);
-								echo Utils::generateHeader('warns', 'server', 'Server', $order);
+								if(Settings::$show_servers) echo Utils::generateHeader('warns', 'server', 'Server', $order);
 							?>
 						</tr>
 					</thead>
@@ -375,7 +379,9 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								<td class="tertiaryColor py-4 px-4"><a href="/?page=warns&moderator=<?= $result[$i]['username_from'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_from']; ?></span></div></a></td>
 								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
-								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=warns&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php if(Settings::$show_servers){ ?>
+									<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=warns&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php } ?>
 							</tr>
 							<?php
 						}?>
@@ -452,7 +458,7 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								echo Utils::generateHeader('kicks', 'moderator', 'Moderator', $order);
 								echo Utils::generateHeader('kicks', 'reason', 'Reason', $order, 0);
 								echo Utils::generateHeader('kicks', 'date', 'Date', $order);
-								echo Utils::generateHeader('kicks', 'server', 'Server', $order);
+								if(Settings::$show_servers) echo Utils::generateHeader('kicks', 'server', 'Server', $order);
 							?>
 						</tr>
 					</thead>
@@ -464,7 +470,9 @@ $kick_count = Utils::getRowCount('adminbans_kicked_players');
 								<td class="tertiaryColor py-4 px-4"><a href="/?page=kicks&moderator=<?= $result[$i]['username_from'] ?>"><div class="flex justify-start space-x-3"><?php if(Settings::$heads_link != null){ ?><img src="<?php echo str_replace("{name}", $result[$i]['username_from'], Settings::$heads_link); ?>" /><?php } echo "<span class='mt-auto mb-auto'>" . $result[$i]['username_from']; ?></span></div></a></td>
 								<td class="tertiaryColor py-4 px-4"><?php if($result[$i]['reason'] != null) echo Utils::chatColor($result[$i]['reason']); ?></td>
 								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><?php echo $result[$i]['created']; ?></td>
-								<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=kicks&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php if(Settings::$show_servers){ ?>
+									<td class="tertiaryColor py-4 px-4 whitespace-nowrap"><a href="/?page=kicks&server=<?= $result[$i]['server'] ?>"><?php if($result[$i]['server'] != ""){ echo $result[$i]['server']; }else{ echo "-"; } ?></a></td>
+								<?php } ?>
 							</tr>
 							<?php
 						}?>

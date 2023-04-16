@@ -29,6 +29,9 @@ class Settings{
 	//For how many seconds the data should be cached?
 	public static $cache_data = 300;
 
+	//Should servers be shown in the table?
+	public static $show_servers = false;
+
 	//Discord server link. Example: "https://discord.gg/hUNymXX" or null
 	public static $discord_link = "Your Link Here";
 

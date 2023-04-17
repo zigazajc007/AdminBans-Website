@@ -5,7 +5,7 @@ include_once "Settings.php";
 session_start();
 
 if(isset($_SESSION["username"])){
-	header("Location: panel.php");
+	header("Location: index.php");
 	return;
 }
 
@@ -72,7 +72,7 @@ if(isset($_SESSION["username"])){
 			</div>
 		</div>
 
-		<div id="dialog" class="hidden h-screen w-full fixed left-0 top-0 flex justify-center items-center z-10 inset-0 overflow-y-auto" aria-labelledby="dialog-title" role="dialog" aria-modal="true">
+		<div id="dialog" class="<?php if(!isset($_SESSION["msg"])){ echo "hidden"; } ?> h-screen w-full fixed left-0 top-0 flex justify-center items-center z-10 inset-0 overflow-y-auto" aria-labelledby="dialog-title" role="dialog" aria-modal="true">
 			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 			<span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 			<div class="secondaryBackgroundColor inline-block align-bottom rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all m-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
@@ -83,9 +83,9 @@ if(isset($_SESSION["username"])){
 						</svg>
 					</div>
 					<div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-						<h3 class="tertiaryColor text-lg leading-6 font-medium" id="dialog-title"></h3>
+						<h3 class="tertiaryColor text-lg leading-6 font-medium" id="dialog-title">Error</h3>
 						<div class="mt-2">
-							<p class="secondaryColor text-sm" id="dialog-text"></p>
+							<p class="secondaryColor text-sm" id="dialog-text"><?php if(isset($_SESSION["msg"])){ echo $_SESSION["msg"]; } ?></p>
 						</div>
 					</div>
 				</div>
@@ -93,12 +93,13 @@ if(isset($_SESSION["username"])){
 					<button id="dialog-button" type="button" class="dangerButton inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium focus:outline-none sm:w-auto sm:text-sm">
 						Okay
 					</button>
-					<button id="dialog-button-cancel" type="button" class="cancelButton mt-2 w-full inline-flex justify-center rounded-md border px-4 py-2 text-base font-medium shadow-sm focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-						Cancel
-					</button>
 				</div>
 			</div>
 		</div>
+
+		<?php
+			unset($_SESSION["msg"]);
+		?>
 
 		<script type="module" src="js/login.js"></script>
 	</body>

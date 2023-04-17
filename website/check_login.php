@@ -25,7 +25,7 @@ if(Settings::$admin_accounts[$_POST['username']] !== $_POST["password"]){
 	return;
 }
 
-$_SESSION["msg"] = "";
+unset($_SESSION["msg"]);
 $_SESSION["username"] = $_POST['username'];
-header("Location: panel.php");
+header("Location: index.php");
 ?>

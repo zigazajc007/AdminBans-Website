@@ -63,6 +63,10 @@ if(isset($_SESSION["username"])){
 						</div>
 					</div>
 
+					<?php
+						if(Settings::$turnstile) echo '<div class="cf-turnstile" data-sitekey="' . Settings::$turnstile_sitekey . '" data-action="login" data-theme="dark" data-language="en"></div>';
+					?>
+
 					<div class="text-center">
 						<button id="btn_signin" type="submit" class="primaryButton group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none">
 							Sign in
@@ -102,5 +106,8 @@ if(isset($_SESSION["username"])){
 		?>
 
 		<script type="module" src="js/login.js"></script>
+		<?php
+			if(Settings::$turnstile) echo '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>';
+		?>
 	</body>
 </html>

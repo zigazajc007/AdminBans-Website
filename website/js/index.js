@@ -6,6 +6,10 @@ document.getElementById("menu-toggle-btn").addEventListener('click', () => {
 	Utils.toggleMenu();
 });
 
+document.getElementById('dialog-button-cancel').addEventListener('click', () => {
+	Utils.hide('dialog');
+});
+
 try{
 	if(parms.get('player') !== null){
 		document.getElementById("search").value = parms.get('player');

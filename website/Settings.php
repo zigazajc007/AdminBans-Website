@@ -13,12 +13,15 @@ class Settings{
 	public static $mysql_password = "";
 
 	// Login data for Admin Bans panel (Please don't use default password)
-	public static $login_username = "admin";
-	public static $login_password = "d45HKmyHkQkNPGNoZxz7Dwz7i";
-	// Do you want to use hCaptcha for login?
-	public static $login_hcaptcha = false;
-	public static $login_hcaptcha_sitekey = "Site Key Here";
-	public static $login_hcaptcha_privatekey = "Private Key Here";
+	public static $admin_accounts = [
+		"admin" => "d45HKmyHkQkNPGNoZxz7Dwz7i",
+		"admin2" => "vn5QkeDq3AkVzP8vpCP84bW8m",
+	];
+
+	// Do you want to use Turnstile (Captcha) for admin logins (Mitigate brute force attacks)?
+	public static $turnstile = false;
+	public static $turnstile_sitekey = "1x00000000000000000000AA";
+	public static $turnstile_privatekey = "1x0000000000000000000000000000000AA";
 
 	//Choose default theme
 	public static $default_theme = "dark";

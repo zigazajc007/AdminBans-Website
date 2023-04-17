@@ -36,6 +36,13 @@ class Utils{
 		return $text;
 	}
 
+	public static function getUserIpAddress() : string {
+		if(!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) return $_SERVER['HTTP_CF_CONNECTING_IP'];
+		if(!empty($_SERVER['HTTP_CLIENT_IP'])) return $_SERVER['HTTP_CLIENT_IP'];
+		if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) return $_SERVER['HTTP_X_FORWARDED_FOR'];
+		return $_SERVER['REMOTE_ADDR'];
+	}
+
 	public static function createConnection(){
 		$conn = null;
 		try{
@@ -87,6 +94,19 @@ class Utils{
 		}catch(PDOException $e) {
 			Utils::writeCache('row_count_' . $table, -1, 5);
 			return -1;
+		}
+	}
+
+	public static function deleteEntry($table = 'adminbans_banned_players', $id){
+		try{
+			$conn = Utils::createConnection();
+
+			$stmt = $conn->prepare("DELETE FROM " . $table . " WHERE id = :id");
+			$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+			return $stmt->execute();
+		}catch(PDOException $e) {
+			return false;
 		}
 	}
 
